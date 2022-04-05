@@ -1,2 +1,2 @@
 # contribution
-The contribution page.
+The contribution page for huokan.
