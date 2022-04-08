@@ -1,4 +1,5 @@
 ---
+layout: default
 title: 火刊投稿规范
 ---
 
