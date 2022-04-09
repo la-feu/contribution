@@ -53,9 +53,4 @@ input[type=submit] {
     })
 </script>
 
-<script type="text/python">
-    from browser import document
-    def submit(fakeargs):
-        print(1)
-    document['submit'].bind('click', submit)
-</script>
+<script type="text/python" src="{{site.baseurl}}/python/send.py"></script>
