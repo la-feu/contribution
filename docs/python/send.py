@@ -1,7 +1,7 @@
 from browser import document
 import smtplib
-# from email.mime.text import MIMEText
-# from email.header import Header
+from email.mime.text import MIMEText
+from email.header import Header
 
 sender = 'huooooosheeeee@163.com'
 receivers = ['hanyx2006@qq.com']

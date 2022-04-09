@@ -179,12 +179,13 @@ def _quote_periods(bindata):
 def _fix_eols(data):
     return  re.sub(r'(?:\r\n|\n|\r(?!\n))', CRLF, data)
 
-try:
-    import ssl
-except ImportError:
-    _have_ssl = False
-else:
-    _have_ssl = True
+# try:
+#     import ssl
+# except ImportError:
+#     _have_ssl = False
+# else:
+#     _have_ssl = True
+_have_ssl = False
 
 
 class SMTP:
