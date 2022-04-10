@@ -4,13 +4,22 @@ title: 主页
 ---
 
 <style>
-input[type=submit] {
+#submit-region {
     margin: 20px 0px;
+}
+#submit {
     width: 80px;
     height: 30px;
     border-radius: 15px;
     border: none;
     background-color: #0099ff;
+    cursor: pointer;
+}
+#submit:hover {
+    background-color: #007ccf;
+}
+#submit:active {
+    background-color: #0069af;
 }
 </style>
 
@@ -20,26 +29,22 @@ input[type=submit] {
 
 <p>在投稿之前，建议您先阅读<a href="{{site.baseurl}}/standard.html">火刊投稿规范</a>，以便您的投稿内容能够被正确的排版和显示。</p>
 
-<form>
+<p><strong>标题：</strong><input type="text" name="title" placeholder="无题" /></p>
 
-<p><strong>标题：</strong><input type="text" placeholder="无题" /></p>
+<p><strong>作者：</strong><input type="text" name="author" placeholder="匿名" /></p>
 
-<p><strong>作者：</strong><input type="text" placeholder="匿名" /></p>
-
-<p><strong>排版方式：</strong><select>
-    <option>文章（首行缩进）</option>
-    <option>文章（首行不缩进）</option>
-    <option>诗歌（居中）</option>
-    <option>诗歌（不居中）</option>
-    <option>自定义</option>
-</select>&nbsp;（<a href="{{site.baseurl}}/formats.html">?</a>）</p>
+<p><strong>排版方式：</strong><select name="format">
+    <option value="011">文章（首行缩进）</option>
+    <option value="111">文章（首行不缩进）</option>
+    <option value="010">诗歌（居中）</option>
+    <option value="110">诗歌（不居中）</option>
+    <option value="-">自定义</option>
+</select>&nbsp;&nbsp;<a href="{{site.baseurl}}/formats.html"><i class="fa-regular fa-circle-question" style="color: #606060;"></i></a></p>
 
 <p><strong>正文：</strong></p>
 <div id="editor"></div>
 
-<input type="submit" id="submit" value="提交" />
-
-</form>
+<div id="submit-region"><button type="button" id="submit" onclick="submit();"><strong>提交</strong></button></div>
 
 <script>
     var quill = new Quill('#editor', {
@@ -50,7 +55,78 @@ input[type=submit] {
         },
         placeholder: '在此输入正文',
         theme: 'snow'
-    })
-</script>
+    });
 
-<script type="text/python" src="{{site.baseurl}}/python/send.py"></script>
+    function submit() {
+        document.getElementById('submit-region').innerHTML = `<i class="fa-solid fa-circle-notch fa-spin" style="font-size: 1.5em;"></i>`;
+        var
+        title = document.getElementsByName('title')[0].value || '无题',
+        author = document.getElementsByName('author')[0].value || '匿名',
+        format = document.getElementsByName('format')[0].value;
+        var lines = quill.getLines();
+        var formatted = '';
+        var original = '';
+        for (var line of lines) {
+            if (line.cache.delta.length() === 1 && line.cache.delta.ops[0].insert === '\n') {
+                original += `<br>`;
+                if (format === '-') {
+                    continue;
+                }
+                if (format === '011' || format === '111') {
+                    formatted += `\\vspace{1em}\n\n`;
+                }
+                else {
+                    formatted += `\n`;
+                }
+                console.log(1);
+            }
+            else {
+                original += line.domNode.innerHTML + `<br>`;
+                if (format === '-') {
+                    continue;
+                }
+                for (var op of line.cache.delta.ops) {
+                    var insert = op.insert;
+                    if (format === '011' || format === '111') {
+                        insert = insert.replace(/\n/g, '\n\n');
+                    }
+                    else {
+                        insert = insert.replace(/\n/g, `\\\\\n`);
+                    }
+                    if (op.attributes) {
+                        if (op.attributes.italic) {
+                            insert = `\\textit{` + insert + `}`;
+                        }
+                        if (op.attributes.bold) {
+                            insert = `\\textbf{` + insert + `}`;
+                        }
+                    }
+                    formatted += insert;
+                }
+            }
+        }
+        if (format !== '-') {
+            if (format === '111' || format === '110') {
+                formatted = `\\noind\n\n` + formatted + `\\ind\n\n`;
+            }
+            if (format === '010') {
+                formatted = `\\begin{center}\n` + formatted + `\\end{center}\n\n`;
+            }
+            formatted = `\\headline{` + title + `}\n\n` + formatted + `\\byline{` + author + `}\n\n`;
+        }
+        original = `<h1>` + title + `</h1>` + original + `<p>（作者：` + author + `）</p>`;
+        console.log(formatted, original);
+        // Email.send({
+        //     Host: 'smtp.qq.com',
+        //     Username: 'hanyx2006',
+        //     Password: 'zyvhfiyajldnbihd',
+        //     From: 'hanyx2006@qq.com',
+        //     To: 'hanyx2006@qq.com',
+        //     Subject: '这是一封测试邮件',
+        //     Body: '<h1>这是一封测试邮件</h1>'
+        // }).then(msg => {
+        //     alert(msg);
+        //     location.reload();
+        // });
+    }
+</script>
