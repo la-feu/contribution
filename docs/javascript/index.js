@@ -18,6 +18,21 @@ function submit() {
     var formatted = '';
     var original = '';
     for (var line of lines) {
+        if (!line.cache.delta) {
+            var insert = line.domNode.innerText + `\n`;
+            original += insert;
+            if (format === '-') {
+                continue;
+            }
+            if (format === '011' || format === '111') {
+                insert = insert.replace(/\n/g, '\n\n');
+            }
+            else {
+                insert = insert.replace(/\n/g, `\\\\\n`);
+            }
+            formatted += insert;
+            continue;
+        }
         if (line.cache.delta.length() === 1 && line.cache.delta.ops[0].insert === '\n') {
             original += `\n`;
             if (format === '-') {
@@ -83,6 +98,11 @@ function submit() {
         Body: emailBody
     }).then(msg => {
         alert(msg);
-        location.reload();
+        if (msg === 'OK') {
+            location.reload();
+        }
+        else {
+            document.getElementById('submit-region').innerHTML = `<button type="button" id="submit" onclick="submit();"><strong>提交</strong></button>`;
+        }
     });
 }
