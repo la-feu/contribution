@@ -4,6 +4,7 @@ var quill = new Quill('#editor', {
             [ 'bold', 'italic' ]
         ]
     },
+    formats: [ 'bold', 'italic' ],
     placeholder: '在此输入正文',
     theme: 'snow'
 });
