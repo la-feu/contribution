@@ -89,10 +89,10 @@ function submit() {
     }
     emailBody = emailBody.replace(/\n/g, `<br>`);
     Email.send({
-        Host: 'smtp.qq.com',
-        Username: 'hanyx2006',
-        Password: 'zyvhfiyajldnbihd',
-        From: 'hanyx2006@qq.com',
+        Host: 'smtp.163.com',
+        Username: 'lafeu_auto',
+        Password: 'WTFLVQHVSWUPGYGS',
+        From: 'lafeu_auto@163.com',
         To: 'huooooosheeeee@163.com',
         Subject: '自动投稿：' + title + ' - ' + author,
         Body: emailBody
