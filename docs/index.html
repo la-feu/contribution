@@ -29,9 +29,9 @@ title: 主页
 
 <p>在投稿之前，建议您先阅读<a href="{{site.baseurl}}/standard.html">火刊投稿规范</a>，以便您的投稿内容能够被正确地排版和显示。</p>
 
-<p><strong>标题：</strong><input type="text" name="title" placeholder="无题" /></p>
+<p><strong>标题：</strong><input type="text" name="title" maxlength="50" placeholder="无题" /></p>
 
-<p><strong>作者：</strong><input type="text" name="author" placeholder="匿名" /></p>
+<p><strong>作者：</strong><input type="text" name="author" maxlength="20" placeholder="匿名" /></p>
 
 <p><strong>排版方式：</strong><select name="format">
     <option value="011">文章（首行缩进）</option>
@@ -40,6 +40,8 @@ title: 主页
     <option value="110">诗歌（不居中）</option>
     <option value="-">自定义</option>
 </select>&nbsp;&nbsp;<a href="{{site.baseurl}}/formats.html"><i class="fa-regular fa-circle-question" style="color: #606060;"></i></a></p>
+
+<p style="display: flex; flex-direction: row;"><strong>说明：</strong><textarea name="info" rows="4" cols="20" maxlength="1000" wrap="virtual"></textarea></p>
 
 <p><strong>正文：</strong></p>
 <div id="editor"></div>

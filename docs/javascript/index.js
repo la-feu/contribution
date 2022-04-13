@@ -14,7 +14,8 @@ function submit() {
     var
     title = document.getElementsByName('title')[0].value || '无题',
     author = document.getElementsByName('author')[0].value || '匿名',
-    format = document.getElementsByName('format')[0].value;
+    format = document.getElementsByName('format')[0].value,
+    info = document.getElementsByName('info')[0].value;
     var lines = quill.getLines();
     var formatted = '';
     var original = '';
@@ -81,7 +82,7 @@ function submit() {
         formatted = `\\headline{` + title + `}\n\n` + formatted + `\\byline{` + author + `}`;
     }
     original = `<h2>` + title + `</h2>` + original + `\n（作者：` + author + `）`;
-    emailBody = `这是一封由火社投稿页面自动发送的邮件。<h1>ORIGINAL</h1>` + original;
+    emailBody = `这是一封由火社投稿页面自动发送的邮件。\n说明：\n` + info + `<h1>ORIGINAL</h1>` + original;
     if (format === '-') {
         emailBody += `<h1>AUTOFORMAT DISABLED</h1>`;
     }
@@ -98,11 +99,12 @@ function submit() {
         Subject: '自动投稿：' + title + ' - ' + author,
         Body: emailBody
     }).then(msg => {
-        alert(msg);
         if (msg === 'OK') {
+            alert('投稿成功！');
             location.reload();
         }
         else {
+            alert('出错了，请重试。\n如果错误没能解决，请将下面的错误信息发送至huooooosheeeee@163.com。\n' + msg);
             document.getElementById('submit-region').innerHTML = `<button type="button" id="submit" onclick="submit();"><strong>提交</strong></button>`;
         }
     });
