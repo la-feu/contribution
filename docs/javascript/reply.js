@@ -10,6 +10,7 @@ if (location.search) {
     for (var pair of location.search.substring(1).split('&')) {
         search[pair.split('=')[0]] = pair.split('=')[1];
     }
+    search.title = decodeURI(search.title);
     if (search.title && search.token) {
         var reply = undefined;
         var req = new XMLHttpRequest();
@@ -17,7 +18,7 @@ if (location.search) {
         req.send(null);
         req.onload = () => {
             if (req.status == 200) {
-                allReply = JSON.parse(req.responseText);
+                var allReply = JSON.parse(req.responseText);
                 if (allReply[search.title] && allReply[search.title][search.token]) {
                     document.getElementById('result').append(allReply[search.title][search.token]);
                 }
