@@ -1,0 +1,22 @@
+#submit-region {
+    margin: 20px 0px;
+}
+
+button {
+    width: 80px;
+    height: 30px;
+    border-radius: 15px;
+    border: none;
+    background-color: #0099ff;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #007ccf;
+}
+button:active {
+    background-color: #0069af;
+}
+
+a.title:hover {
+    text-decoration: none;
+}

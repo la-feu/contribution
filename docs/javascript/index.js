@@ -9,6 +9,24 @@ var quill = new Quill('#editor', {
     theme: 'snow'
 });
 
+function getToken() {
+    var chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz23456789';
+    var token = '';
+    for (var i = 0; i < 16; ++i) {
+        token += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return token;
+}
+
+async function copyToken() {
+    try {
+        await navigator.clipboard.writeText(document.getElementById('token').innerText);
+        alert('复制成功！');
+    } catch (e) {
+        alert('复制失败：' + e);
+    }
+}
+
 function submit() {
     document.getElementById('submit-region').innerHTML = `<i class="fa-solid fa-circle-notch fa-spin" style="font-size: 1.5em;"></i>`;
     var
@@ -52,10 +70,10 @@ function submit() {
                 var insert = op.insert;
                 if (op.attributes) {
                     if (op.attributes.italic) {
-                        insert = `\\textit{` + insert + `}`;
+                        insert = `\\textit{${insert}}`;
                     }
                     if (op.attributes.bold) {
-                        insert = `\\textbf{` + insert + `}`;
+                        insert = `\\textbf{${insert}}`;
                     }
                 }
                 original += insert;
@@ -66,7 +84,7 @@ function submit() {
                     insert = insert.replace(/\n/g, '\n\n');
                 }
                 else {
-                    insert = insert.replace(/\n/g, `\\\\\n`);
+                    insert = insert.replace(/\n/g, '\\\\\n');
                 }
                 formatted += insert;
             }
@@ -74,20 +92,24 @@ function submit() {
     }
     if (format !== '-') {
         if (format === '111' || format === '110') {
-            formatted = `\\noind\n\n` + formatted + `\\ind\n\n`;
+            formatted = `\\noind\n\n${formatted}\\ind\n\n`;
         }
         if (format === '010') {
-            formatted = `\\begin{center}\n` + formatted + `\\end{center}\n\n`;
+            formatted = `\\begin{center}\n${formatted}\\end{center}\n\n`;
         }
-        formatted = `\\headline{` + title + `}\n\n` + formatted + `\\byline{` + author + `}`;
+        formatted = `\\headline{${title}}\n\n${formatted}\\byline{${author}}`;
     }
-    original = `<h2>` + title + `</h2>` + original + `\n（作者：` + author + `）`;
-    emailBody = `这是一封由火社投稿页面自动发送的邮件。\n说明：\n` + info + `<h1>ORIGINAL</h1>` + original;
+    original = `<h2>${title}</h2>${original}\n（作者：${author}）`;
+    emailBody = `这是一封由火社投稿页面自动发送的邮件。\n标识符：${document.getElementById('token').innerText}`;
+    if (info) {
+        emailBody += `\n说明：\n${info}`;
+    }
+    emailBody += `<h1>ORIGINAL</h1>${original}`;
     if (format === '-') {
         emailBody += `<h1>AUTOFORMAT DISABLED</h1>`;
     }
     else {
-        emailBody += `<h1>FORMATTED</h1>` + formatted;
+        emailBody += `<h1>FORMATTED</h1>${formatted}`;
     }
     emailBody = emailBody.replace(/\n/g, `<br>`);
     Email.send({
@@ -96,11 +118,11 @@ function submit() {
         Password: 'WTFLVQHVSWUPGYGS',
         From: 'lafeu_auto@163.com',
         To: 'huooooosheeeee@163.com',
-        Subject: '自动投稿：' + title + ' - ' + author,
+        Subject: `自动投稿：${title} - ${author}`,
         Body: emailBody
     }).then(msg => {
         if (msg === 'OK') {
-            alert('投稿成功！');
+            alert('投稿成功！请记住您的投稿的标识符：' + document.getElementById('token').innerText);
             location.reload();
         }
         else {

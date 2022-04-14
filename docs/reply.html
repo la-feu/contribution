@@ -1,0 +1,16 @@
+---
+layout: default
+title: 投稿回复
+---
+
+<h1>投稿回复</h1>
+
+<p><strong>标题：</strong><input type="text" name="title" maxlength="50" /></p>
+
+<p><strong>标识符：</strong><input type="text" name="token" maxlength="16" /></p>
+
+<button type="button" id="ask" onclick="ask();"><strong>查询</strong></button>
+
+<div id="result"></div>
+
+<script src="{{site.baseurl}}/javascript/reply.js"></script>
