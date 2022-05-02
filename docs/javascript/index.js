@@ -90,6 +90,11 @@ function submit() {
             }
         }
     }
+    formatted = formatted
+        .replace(/%/, '\\%')
+        .replace(/#/, '\\#')
+        .replace(/&/, '\\&')
+        .replace(/_/, '\\_');
     if (format !== '-') {
         if (format === '111' || format === '110') {
             formatted = `\\noind\n\n${formatted}\\ind\n\n`;
