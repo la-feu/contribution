@@ -2,3 +2,5 @@ theme: jekyll-theme-slate
 baseurl: /contribution
 title: 火刊投稿
 description: The contribution page for huokan.
+kramdown:
+  gfm_quirks: [no_auto_typographic]
