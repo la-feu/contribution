@@ -118,9 +118,9 @@ function submit() {
     }
     emailBody = emailBody.replace(/\n/g, `<br>`);
     Email.send({
-        Host: 'smtp.163.com',
+        Host: 'smtp.elasticemail.com',
         Username: 'lafeu_auto',
-        Password: 'WTFLVQHVSWUPGYGS',
+        Password: 'CB276AEE64AD2352C106E1FA7850AB0A9C2B',
         From: 'lafeu_auto@163.com',
         To: 'huooooosheeeee@163.com',
         Subject: `自动投稿：${title} - ${author}`,
