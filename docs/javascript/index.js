@@ -118,7 +118,7 @@ function submit() {
     }
     emailBody = emailBody.replace(/\n/g, `<br>`);
     Email.send({
-        Host: 'smtp.elasticemail.com:2525',
+        Host: 'smtp.elasticemail.com',
         Username: 'lafeu_auto@163.com',
         Password: 'CB276AEE64AD2352C106E1FA7850AB0A9C2B',
         From: 'lafeu_auto@163.com',
