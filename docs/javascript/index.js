@@ -127,7 +127,7 @@ function submit() {
             location.reload();
         },
         (error) => {
-            alert('出错了，请重试。\n如果错误没能解决，请将下面的错误信息发送至huooooosheeeee@163.com。\n' + error);
+            alert('出错了，请重试。\n如果错误没能解决，请将下面的错误信息发送至huooooosheeeee@163.com。\n' + error.toString());
             document.getElementById('submit-region').innerHTML = `<button type="button" id="submit" onclick="submit();"><strong>提交</strong></button>`;
         },
     );
