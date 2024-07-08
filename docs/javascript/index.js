@@ -117,22 +117,18 @@ function submit() {
         emailBody += `<h1>FORMATTED</h1>${formatted}`;
     }
     emailBody = emailBody.replace(/\n/g, `<br>`);
-    Email.send({
-        Host: 'smtp.elasticemail.com',
-        Username: 'lafeu_auto@163.com',
-        Password: 'CB276AEE64AD2352C106E1FA7850AB0A9C2B',
-        From: 'lafeu_auto@163.com',
-        To: 'huooooosheeeee@163.com',
-        Subject: `自动投稿：${title} - ${author}`,
-        Body: emailBody
-    }).then(msg => {
-        if (msg === 'OK') {
+    emailjs.send('service_ysj6fgh', 'template_paptgrc', {
+        title: title,
+        author: author,
+        body: emailBody
+    }).then(
+        (response) => {
             alert('投稿成功！请记住您的投稿的标识符：' + document.getElementById('token').innerText);
             location.reload();
-        }
-        else {
-            alert('出错了，请重试。\n如果错误没能解决，请将下面的错误信息发送至huooooosheeeee@163.com。\n' + msg);
+        },
+        (error) => {
+            alert('出错了，请重试。\n如果错误没能解决，请将下面的错误信息发送至huooooosheeeee@163.com。\n' + error);
             document.getElementById('submit-region').innerHTML = `<button type="button" id="submit" onclick="submit();"><strong>提交</strong></button>`;
-        }
-    });
+        },
+    );
 }
